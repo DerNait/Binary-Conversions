@@ -2,16 +2,25 @@ public class Calculadora {
 
     public static void main(String[] args) {
         
-        //BINARIA
-        String binaryNumber = "00001111";
+        //BINARIA A DECIMAL
+        String binaryNumber = "11001100";
         double binaryResult = binaryOperation(binaryNumber);
         System.out.println("\nEl resultado del numero binario: " + binaryNumber + " es igual a: " + binaryResult + "\n");
 
-        //HEXADECIMAL
+        //HEXADECIMAL A DECIMAL
         String hexNumber = "19F";
         double hexResult = hexOperation(hexNumber);
         System.out.println("\nEl resultado del numero hexadecimal: " + hexNumber + " es igual a: " + hexResult + "\n");
 
+        //DECIMAL A BINARIA
+        double decimalNumber = 204;
+        binaryNumber = decimalToBinaryOperation(decimalNumber);
+        System.out.println("\nEl decimal: "+ decimalNumber +" en Binario es: " + binaryNumber + "\n");
+
+        //DECIMAL A HEXADECIMAL
+        double decimalHexNumber = 427;
+        hexNumber = decimalToHexOperation(decimalHexNumber);
+        System.out.println("\nEl decimal: "+ decimalHexNumber +" en Hexadecimal es: " + hexNumber + "\n");
     }
 
     public static Double hexOperation(String hexNumber){
@@ -74,6 +83,56 @@ public class Calculadora {
         return binaryOperation(hexToBinary);
     }
 
+    public static String decimalToHexOperation(double hexNumber){
+            double temp = hexNumber;
+            String hexNumberReverse = "";
+            String realHexNumber = "";
+            int residue;
+            int cociente;
+            System.out.println((Integer.toString((int) hexNumber)).length());
+            for(int i = 0; i < (Integer.toString((int) hexNumber)).length(); i++){
+                String residueCharacter = "";
+                cociente = (int)temp / 16;
+                residue = (int)temp % 16;
+                temp = cociente;
+
+                if(residue >= 10){
+                    switch (residue) {
+                        case 10:
+                            residueCharacter = "A";
+                            break;
+                        case 11:
+                            residueCharacter = "B";
+                            break;
+                        case 12:
+                            residueCharacter = "C";
+                            break;
+                        case 13:
+                            residueCharacter = "D";
+                            break;
+                        case 14:
+                            residueCharacter = "E";
+                            break;
+                        case 15:
+                            residueCharacter = "F";
+                            break;            
+                    }
+                }else{
+                    residueCharacter = Integer.toString(residue);
+                }
+                
+                if(!residueCharacter.equals("0"))
+                    hexNumberReverse += residueCharacter;
+            }
+
+            for (int i = hexNumberReverse.length() - 1; i >= 0; i--) {
+                // Y vamos concatenando cada carácter a la nueva cadena
+                realHexNumber += hexNumberReverse.charAt(i);
+            }
+
+            return realHexNumber;
+    }
+
     public static Double binaryOperation(String binaryNumber){
         String[] separatedNumbers = binaryNumber.split("");
         invertUsingFor(separatedNumbers);
@@ -88,6 +147,27 @@ public class Calculadora {
         }
 
         return result;
+    }
+
+    public static String decimalToBinaryOperation(double decimalNumber){
+        double temp = decimalNumber;
+        String binaryNumberReverse = "";
+        String realBinaryNumber = "";
+        int residue;
+        int cociente;
+        for(int i = 0; i < 8; i++){
+            cociente = (int)temp / 2;
+            residue = (int)temp % 2;
+            temp = cociente;
+            binaryNumberReverse += ""+residue;
+        }
+
+		for (int i = binaryNumberReverse.length() - 1; i >= 0; i--) {
+			// Y vamos concatenando cada carácter a la nueva cadena
+			realBinaryNumber += binaryNumberReverse.charAt(i);
+		}
+
+        return realBinaryNumber;
     }
 
     public static void invertUsingFor(String[] array) {
