@@ -12,9 +12,15 @@ public class Calculadora {
         double hexResult = hexOperation(hexNumber);
         System.out.println("\nEl resultado del numero hexadecimal: " + hexNumber + " es igual a: " + hexResult + "\n");
 
+        //HEXADECIMAL A BINARIA
+        String hexNumber2 = "1AB";
+        String binaryResult2 = hexToBCD(hexNumber2);
+        System.out.println("\nEl Hexadecimal: "+ hexNumber2 +" en Binario es: " + binaryResult2 + "\n");
+
         //DECIMAL A BINARIA
         double decimalNumber = 204;
-        binaryNumber = decimalToBinaryOperation(decimalNumber);
+        int bits = 8;
+        binaryNumber = decimalToBinaryOperation(decimalNumber, bits);
         System.out.println("\nEl decimal: "+ decimalNumber +" en Binario es: " + binaryNumber + "\n");
 
         //DECIMAL A HEXADECIMAL
@@ -23,7 +29,7 @@ public class Calculadora {
         System.out.println("\nEl decimal: "+ decimalHexNumber +" en Hexadecimal es: " + hexNumber + "\n");
     }
 
-    public static Double hexOperation(String hexNumber){
+    public static String hexToBCD(String hexNumber){
         String[] separatedNumbersHex = hexNumber.split("");
         String hexToBinary = "";
 
@@ -80,7 +86,12 @@ public class Calculadora {
             }
         }
 
-        return binaryOperation(hexToBinary);
+        return hexToBinary;
+    }
+
+    public static double hexOperation(String hexToBinary){
+        String binaryNumber = hexToBCD(hexToBinary);
+        return binaryOperation(binaryNumber);
     }
 
     public static String decimalToHexOperation(double hexNumber){
@@ -89,7 +100,7 @@ public class Calculadora {
             String realHexNumber = "";
             int residue;
             int cociente;
-            System.out.println((Integer.toString((int) hexNumber)).length());
+
             for(int i = 0; i < (Integer.toString((int) hexNumber)).length(); i++){
                 String residueCharacter = "";
                 cociente = (int)temp / 16;
@@ -149,13 +160,13 @@ public class Calculadora {
         return result;
     }
 
-    public static String decimalToBinaryOperation(double decimalNumber){
+    public static String decimalToBinaryOperation(double decimalNumber, int bits){
         double temp = decimalNumber;
         String binaryNumberReverse = "";
         String realBinaryNumber = "";
         int residue;
         int cociente;
-        for(int i = 0; i < 8; i++){
+        for(int i = 0; i < bits; i++){
             cociente = (int)temp / 2;
             residue = (int)temp % 2;
             temp = cociente;
