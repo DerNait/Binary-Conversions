@@ -1,9 +1,55 @@
+import java.util.*;
+
 public class Calculadora {
 
     public static void main(String[] args) {
         
+        //MENU
+        boolean salir = false;
+        String seleccion;
+        Scanner scan = new Scanner(System.in);
+
+        while (!salir) {
+            System.out.println("\n===CALCULADORA BINARA===\n");
+            System.out.println("1. Convertir un decimal a binario");
+            System.out.println("2. Convertir decimal en complemento a dos");
+            System.out.println("3. Sumar dos binarios");
+            System.out.println("4. Salir");
+            seleccion = scan.nextLine();
+
+            switch (seleccion) {
+                case "1":
+                    double decimalNum;
+                    System.out.println("\nIngrese su numero entero para pasarlo a binario. Que este en el rango de numeros de 8 bits");
+                    decimalNum = Double.parseDouble(scan.nextLine());
+                    System.out.println("\nSu numero en binario es: "+ decimalToBinaryOperation(decimalNum,8));
+                    break;
+                case "2":
+                    System.out.println("\nIngrese su numero entero para pasarlo a complemento a 2. Que este en el rango de numeros de 8 bits");
+                    decimalNum = Double.parseDouble(scan.nextLine());
+                    String decimalToBinary = decimalToBinaryOperation(decimalNum, 8);
+                    System.out.println("\nSu numero en complemento a 2 es: " + binaryToC2(decimalToBinary));
+                    break;
+                case "3":
+                    System.out.println("\nIngrese el primer numero binario. Que este en 8 bits");
+                    String binaryNum1 = scan.nextLine();
+                    System.out.println("\nIngrese el segundo numero binario. Que este en 8 bits");
+                    String binaryNum2 = scan.nextLine();
+                    double resultSum = binaryOperation(binaryNum1) + binaryOperation(binaryNum2);
+                    System.out.println("\nEl resultado de la suma binaria es de: " + decimalToBinaryOperation(resultSum, 8));
+                    break;
+                case "4":
+                    System.out.println("\nHasta pronto");
+                    scan.close();
+                    salir = true;
+                default:
+                    break;
+            }
+
+        }
+
         //BINARIA A DECIMAL
-        String binaryNumber = "11001100";
+        String binaryNumber = "101011110001";
         double binaryResult = binaryOperation(binaryNumber);
         System.out.println("\nEl resultado del numero binario: " + binaryNumber + " es igual a: " + binaryResult + "\n");
 
@@ -27,6 +73,33 @@ public class Calculadora {
         double decimalHexNumber = 427;
         hexNumber = decimalToHexOperation(decimalHexNumber);
         System.out.println("\nEl decimal: "+ decimalHexNumber +" en Hexadecimal es: " + hexNumber + "\n");
+    }
+
+    public static String binaryToC2(String binaryNumber){
+        char[] binaryNumberChars = binaryNumber.toCharArray();
+
+        for(int i = 0; i < binaryNumberChars.length; i++){
+            switch (binaryNumberChars[i]) {
+                case '1':
+                    binaryNumberChars[i] = '0';
+                    break;
+                case '0':
+                    binaryNumberChars[i] = '1';
+                default:
+                    break;
+            }
+        }
+
+        binaryNumber = String.valueOf(binaryNumberChars);
+        
+        System.out.println(binaryNumber);
+
+        String addOneBinary = "00000001";
+        double addOne = binaryOperation(binaryNumber) + binaryOperation(addOneBinary);
+
+        System.out.println(addOne);
+        
+        return decimalToBinaryOperation(addOne, 8);
     }
 
     public static String hexToBCD(String hexNumber){
@@ -161,6 +234,11 @@ public class Calculadora {
     }
 
     public static String decimalToBinaryOperation(double decimalNumber, int bits){
+        double originalNumber = decimalNumber;
+        if(decimalNumber < 0){
+            decimalNumber *= -1;
+        }
+
         double temp = decimalNumber;
         String binaryNumberReverse = "";
         String realBinaryNumber = "";
@@ -172,11 +250,17 @@ public class Calculadora {
             temp = cociente;
             binaryNumberReverse += ""+residue;
         }
-
+        
 		for (int i = binaryNumberReverse.length() - 1; i >= 0; i--) {
 			// Y vamos concatenando cada carácter a la nueva cadena
 			realBinaryNumber += binaryNumberReverse.charAt(i);
 		}
+
+        if(originalNumber < 0){
+            char[] realBinaryNumberChars = realBinaryNumber.toCharArray();
+            realBinaryNumberChars[0] = '1';
+            realBinaryNumber = String.valueOf(realBinaryNumberChars);
+        }
 
         return realBinaryNumber;
     }
